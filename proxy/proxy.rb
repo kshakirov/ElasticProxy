@@ -13,7 +13,7 @@ post '/magento_product/_search' do
   client = Elasticsearch::Client.new   host: 'localhost', log: true
   response =client.search index: 'magento_product', type: 'product', size: @params[:size],  from: @params[:from], body: @json
   price_manager = PriceManager.new
-  price_manager.get_simple_price response
+  price_manager.get_simple_price response,@params['stats']
   response.to_json
 
 end
