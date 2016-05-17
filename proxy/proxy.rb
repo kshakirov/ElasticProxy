@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'elasticsearch'
 require_relative 'proxy/price_manager'
+require_relative 'proxy/decriptor'
 
 
 #set :bind, '0.0.0.0'
