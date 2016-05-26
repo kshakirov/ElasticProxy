@@ -6,7 +6,7 @@ require_relative 'proxy/decriptor'
 
 
 configure do
-  set :client, Elasticsearch::Client.new(host: 'localhost', log: true)
+  set :client, Elasticsearch::Client.new(host: 'elastic-instance', log: true)
 end
 
 #set :bind, '0.0.0.0'
