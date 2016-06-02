@@ -36,3 +36,11 @@ find var/ -type d -exec chmod 700 {} \;
 find media/ -type d -exec chmod 700 {} \;
 chmod 700 includes
 chmod 600 includes/config.php
+pecl install redis
+echo "extension=redis.so" > /etc/php5/mods-available/redis.ini
+php5enmod redis
+service apache2 restart
+bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+cd /var/www            # Magento is installed here
+modman init            # This is only done once in the application root
+modman clone git@example.com:foo/mymodule.git
