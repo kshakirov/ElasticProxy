@@ -87,3 +87,11 @@ get '/critical/index/partsheaders' do
   uri = "/critical/index/partsheaders?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
+
+get '/critical/index/manufacturersfilters' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
+  uri = "/critical/index/manufacturersfilters?part_type=" + params[:part_type] + '&manufacturer=' + params[:manufacturer]
+  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+end
