@@ -1,3 +1,4 @@
+require "rack/cache"
 require 'sinatra'
 require 'json'
 require 'elasticsearch'
@@ -7,6 +8,7 @@ require_relative 'proxy/price_manager'
 require_relative 'proxy/decriptor'
 require_relative 'proxy/magento_proxy'
 
+use Rack::Cache
 
 configure do
   set :client, Elasticsearch::Client.new(host: 'elastic-instance', log: true)
@@ -17,6 +19,11 @@ end
 
 set :bind, '0.0.0.0'
 set :port, 4569
+
+
+before do
+  headers 'Connection' => 'permanent'
+end
 
 
 post '/magento_product/_search' do
@@ -33,32 +40,50 @@ get '/test' do
 end
 
 get '/critical/index/sorters' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/sorters?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
 
 get '/critical/index/headers' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/headers?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
 
 
 get '/critical/index/filters' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/filters?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
 
 get '/critical/index/partssorters' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/partssorters?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
 
 get '/critical/index/partsfilters' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/partsfilters?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
 
 get '/critical/index/partsheaders' do
+  content_type 'application/json'
+  cache_control :public, :max_age => 360000000
+  expires 5000000000, :public
   uri = "/critical/index/partsheaders?part_type=" + params[:part_type]
   settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
 end
