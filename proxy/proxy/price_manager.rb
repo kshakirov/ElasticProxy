@@ -22,7 +22,7 @@ class PriceManager
             price = prices[id]
             price = price.to_f.round(2)
       end
-    product['_source']['price'] = price.to_s + " $"
+    product['_source']['price'] = price.to_s
   end
 
   def forbid_product_price product
