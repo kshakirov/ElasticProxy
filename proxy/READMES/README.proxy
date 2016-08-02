@@ -2,3 +2,5 @@
  the following record
  --   127.0.0.1       elastic-instance
  IP of course must be changed to the corespondent container IP
+
+2. Set the
