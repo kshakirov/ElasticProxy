@@ -23,10 +23,10 @@ before do
   headers 'Connection' => 'permanent'
 end
 
-def set_critical_cache
+def set_critical_cache cache_time=3600, expires_time=3600
   content_type 'application/json'
-  cache_control :public, :max_age => 360000000
-  expires 5000000000, :public
+  cache_control :public, :max_age => cache_time
+  expires expires_time, :public
 end
 
 
@@ -43,63 +43,75 @@ end
 get '/critical/index/sorters' do
   set_critical_cache
   uri = "/critical/index/sorters?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/headers' do
   set_critical_cache
   uri = "/critical/index/headers?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 
 get '/critical/index/filters' do
   set_critical_cache
   uri = "/critical/index/filters?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/partssorters' do
   set_critical_cache
   uri = "/critical/index/partssorters?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/partsfilters' do
   set_critical_cache
   uri = "/critical/index/partsfilters?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/partsheaders' do
   set_critical_cache
   uri = "/critical/index/partsheaders?part_type=" + params[:part_type]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/manufacturersfilters' do
   set_critical_cache
   uri = "/critical/index/manufacturersfilters?part_type=" + params[:part_type] + '&manufacturer=' + params[:manufacturer]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 
 get '/critical/index/catalogfilters' do
   set_critical_cache
   uri = "/critical/index/catalogfilters"
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp =settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response
 end
 
 get '/critical/index/featuredProducts' do
-  set_critical_cache
+  set_critical_cache 900, 900
   uri = "/critical/index/featuredProducts?stats=" + params[:stats]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp = settings.magento_proxy.create_cached_response(uri, settings.redis_client, settings.host, 900)
+  last_modified(timestamp)
+  response
 end
 
 get '/critical/index/newProducts' do
-  set_critical_cache
+  set_critical_cache 900, 900
   uri = "/critical/index/newProducts?stats=" + params[:stats]
-  settings.magento_proxy.create_cached_response uri, settings.redis_client, settings.host
+  response, timestamp = settings.magento_proxy.create_cached_response(uri, settings.redis_client, settings.host, 900)
+  last_modified(timestamp)
+  response
 end
 
 
