@@ -34,4 +34,9 @@ class MagentoProxy
       _cache_response(redis_client, host, uri, timeout)
     end
   end
+
+  def test_response uri, host
+     RestClient.get(host + uri)
+  end
+
 end

@@ -5,6 +5,7 @@ require 'elasticsearch'
 require 'redis'
 require 'rest-client'
 require_relative 'proxy/price_manager'
+require_relative 'proxy/product_price_manager'
 require_relative 'proxy/decriptor'
 require_relative 'proxy/magento_proxy'
 
@@ -13,6 +14,7 @@ configure do
   set :redis_client, Redis.new(:host => "redis")
   set :magento_proxy, MagentoProxy.new
   set :host, ENV['MAGENTO_HOST']
+  set :productPriceManager, ProductPriceManager.new
 end
 
 set :bind, '0.0.0.0'
@@ -112,6 +114,15 @@ get '/critical/index/newProducts' do
   response, timestamp = settings.magento_proxy.create_cached_response(uri, settings.redis_client, settings.host, 900)
   last_modified(timestamp)
   response
+end
+
+get '/critical/index/part' do
+  uri = "/critical/index/part?sku=" + params[:sku]
+  response = settings.magento_proxy.test_response(uri, settings.host)
+  response = JSON.parse(response)
+  settings.productPriceManager.get_simple_price(response, params[:stats])
+  response.to_json
+
 end
 
 
