@@ -119,7 +119,7 @@ end
 post '/critical/index/part' do
   request_payload = JSON.parse request.body.read
   uri = "/critical/index/part?sku=" + request_payload['sku']
-  response = settings.magento_proxy.test_response(uri, settings.host)
+  response, timestamp = settings.magento_proxy.get_part_response(uri, settings.redis_client,settings.host)
   response = JSON.parse(response)
   settings.productPriceManager.get_simple_price(response, request_payload['stats'])
   response.to_json
