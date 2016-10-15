@@ -24,6 +24,14 @@ class CustomerInfoDecypher
     end
   end
 
+  def get_customer_id  encrypted_info
+  info = decypher encrypted_info
+  segments = info.split(':')
+  if segments.size > 2
+     segments[2]
+  end
+end
+
   def test
     get_customer_group 'FKVHLg5P6MRI37pkVLfZNg=='
   end

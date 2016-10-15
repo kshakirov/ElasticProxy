@@ -40,6 +40,5 @@ class PriceManager
         process_product_price product, group_id
       end
     end
-
   end
 end
